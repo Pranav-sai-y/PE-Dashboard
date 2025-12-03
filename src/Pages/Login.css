@@ -1,0 +1,54 @@
+.login-page {
+  background-color: #e9f7fb;
+  min-height: 100vh;
+}
+
+.top-bar {
+  height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #0a6ab9, #3b2e8e);
+}
+
+.left-image-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+
+.login-card {
+  border-radius: 12px;
+}
+
+.avatar-circle {
+  width: 90px;
+  height: 90px;
+  background-color: #0b63b3;
+  color: white;
+  border-radius: 50%;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+
+.feature-card {
+  border-radius: 12px;
+}
+
+.avatar-small {
+  width: 50px;
+  height: 50px;
+  background-color: #0b63b3;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
