@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,27 +20,29 @@ import {
   ThemeProvider,
   createTheme,
   Divider,
-  Stack,
+  Stack
 } from "@mui/material";
+
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import SbiLogo from "../Images/sbi-logo.jpg";
+import { Button } from "bootstrap";
 
 // This single-file component reproduces the layout shown in the screenshot.
 // Usage: copy into src/Dashboard.jsx and import in App.jsx. Install @mui/material and @mui/icons.
 
 const drawerWidth = 220;
 
-const metrics = [
-  { id: 1, label: "Total Pendency", value: 120, color: "#fde8ef", border: "#f7cbd5" },
-  { id: 2, label: "AD", value: 89, color: "#e8f8f1", border: "#cfeedc" },
-  { id: 3, label: "AV", value: 42, color: "#f6eef8", border: "#eed9f0" },
-  { id: 4, label: "PIMS", value: 13, color: "#fde8ef", border: "#f7cbd5" },
-  { id: 5, label: "EDR", value: 77, color: "#e8f8f1", border: "#cfeedc" },
-  { id: 6, label: "Active Devices", value: 194, color: "#f6eef8", border: "#eed9f0" },
-  { id: 7, label: "Pending Approvals", value: 16, color: "#fde8ef", border: "#f7cbd5" },
-  { id: 8, label: "Resolved Alerts", value: 55, color: "#e8f8f1", border: "#cfeedc" },
-];
+// const metrics = [
+//   { id: 1, label: "Total Pendency", value: 120, color: "#fde8ef", border: "#f7cbd5" },
+//   { id: 2, label: "AD", value: 89, color: "#e8f8f1", border: "#cfeedc" },
+//   { id: 3, label: "AV", value: 42, color: "#f6eef8", border: "#eed9f0" },
+//   { id: 4, label: "PIMS", value: 13, color: "#fde8ef", border: "#f7cbd5" },
+//   { id: 5, label: "EDR", value: 77, color: "#e8f8f1", border: "#cfeedc" },
+//   { id: 6, label: "Active Devices", value: 194, color: "#f6eef8", border: "#eed9f0" },
+//   { id: 7, label: "Pending Approvals", value: 16, color: "#fde8ef", border: "#f7cbd5" },
+//   { id: 8, label: "Resolved Alerts", value: 55, color: "#e8f8f1", border: "#cfeedc" },
+// ];
 
 
 const summary = [
@@ -68,8 +70,42 @@ const theme = createTheme({
   },
 });
 
+
 export default function BankingStyleDashboard() {
-  // const [activePage, setActivePage] = useState("home");
+  const [activePage, setActivePage] = useState("home");
+
+  const[date,useDate] = useState('03-Nov-2025');
+
+  const [metrics, setMetrics] = useState([
+      { id: 1, label: "Total Pendency", value: 120, color: "#fde8ef", border: "#f7cbd5" },
+      { id: 2, label: "AD", value: 89, color: "#e8f8f1", border: "#cfeedc" },
+      { id: 3, label: "AV", value: 42, color: "#f6eef8", border: "#eed9f0" },
+      { id: 4, label: "PIMS", value: 13, color: "#fde8ef", border: "#f7cbd5" },
+      { id: 5, label: "EDR", value: 77, color: "#e8f8f1", border: "#cfeedc" },
+      { id: 6, label: "Active Devices", value: 194, color: "#f6eef8", border: "#eed9f0" },
+      { id: 7, label: "Pending Approvals", value: 16, color: "#fde8ef", border: "#f7cbd5" },
+      { id: 8, label: "Resolved Alerts", value: 55, color: "#e8f8f1", border: "#cfeedc" },
+    ]);
+
+    const RunReconcillation = () =>{
+
+      useDate('04-Dec-2025');
+
+      setMetrics([
+        { id: 1, label: "Total Pendency", value: 90, color: "red", border: "#f7cbd5" },
+        { id: 2, label: "AD", value: 76, color: "#e8f8f1", border: "#cfeedc" },
+        { id: 3, label: "AV", value: 422, color: "#f6eef8", border: "#eed9f0" },
+        { id: 4, label: "PIMS", value: 113, color: "#fde8ef", border: "#f7cbd5" },
+        { id: 5, label: "EDR", value: 147, color: "#e8f8f1", border: "#cfeedc" },
+        { id: 6, label: "Active Devices", value: 224, color: "#f6eef8", border: "#eed9f0" },
+        { id: 7, label: "Pending Approvals", value: 46, color: "#fde8ef", border: "#f7cbd5" },
+        { id: 8, label: "Resolved Alerts", value: 33, color: "#e8f8f1", border: "#cfeedc" },
+        
+      ]);
+
+    }
+
+ 
 
   return (
     
@@ -197,15 +233,23 @@ export default function BankingStyleDashboard() {
 
           {/* MAIN CONTENT */}
           <Box sx={{ p: 3 }}>
+              {activePage === "DashboardN" ? (
+                <DashboardN />
+              ) : (
+                <>
             {/* {activePage === "dashboardN" ? (
               // Render the new table module when Dashboard N is selected
               <DashboardN />
             ) : ( */}
 
-            
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              ITAM Pendency as on 04-Dec-2025
-            </Typography>
+            <div>
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                ITAM Pendency as on {date}
+              </Typography>
+
+              {/* <button type="button" class="btn btn-primary">Run Reconcillation</button> */}
+
+            </div>
 
             {/* Top big rounded white card containing circular metrics */}
             <Card sx={{ borderRadius: 2, p: 3, mb: 3, boxShadow: 3 }}>
@@ -258,11 +302,16 @@ export default function BankingStyleDashboard() {
                           <option>Pending</option>
                         </TextField>
                       </Box>
+
+                    
+              
                     </Stack>
                   </Box>
                 </Grid>
               </Grid>
             </Card>
+
+            <button type="button" class="btn btn-primary" style={{marginBottom:'40px'}} onClick={RunReconcillation}>Run Reconcillation</button>
 
             {/* Lower summary cards row */}
             <Card sx={{ borderRadius: 2, p: 3, boxShadow: 3 }}>
@@ -282,7 +331,10 @@ export default function BankingStyleDashboard() {
                 ))}
               </Grid>
             </Card>
+            </>
+            )}
           </Box>
+
         </Box>
       </Box>
     </ThemeProvider>

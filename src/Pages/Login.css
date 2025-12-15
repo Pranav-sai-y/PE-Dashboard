@@ -20,6 +20,13 @@
   object-fit: cover;
 }
 
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+}
+
 .login-card {
   border-radius: 12px;
 }
