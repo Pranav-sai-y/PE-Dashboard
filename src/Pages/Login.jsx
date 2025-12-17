@@ -1,132 +1,210 @@
-// src/Pages/Login.jsx
 import React from "react";
-import "./Login.css";                 // your custom styles (kept)
-import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  Box,
+  Card,
+  Typography,
+  Button,
+  Grid,
+  AppBar,
+  Toolbar,
+  Avatar,
+  CssBaseline,
+  ThemeProvider,
+  createTheme
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import LoginTop from "../Images/login-top.png"; // <-- make sure this path is correct
+import LoginInfoTop from "../Images/login-info-top.png"; // Main Hero Image
+import LoginTopIcon from "../Images/login-top.png"; // Small Icon/Graphic
+import SbiLogo from "../Images/sbi-logo.jpg";
+
+// Theme (matching Dashboard)
+const theme = createTheme({
+  palette: {
+    mode: "light",
+    background: {
+      default: "#eaf9fb", // Soft blue background
+      paper: "#ffffff",
+    },
+    primary: { main: "#1467b4" }, // SBI Blue
+    secondary: { main: "#3b2e8e" },
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 700
+        }
+      }
+    }
+  }
+});
 
 export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate("/dashboard"); // go to dashboard page
+    navigate("/dashboard");
   };
 
   return (
-    // full viewport container so page is not "cut"
-    <div
-      className="login-page"
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        background: "#eaf9fb", // keeps same soft background like your dashboard
-        paddingTop: 24,
-        paddingBottom: 40,
-        boxSizing: "border-box",
-      }}
-    >
-      {/* Top gradient bar (kept) */}
-      <div
-        className="top-bar mb-4"
-        style={{
-          height: 36,
-          margin: "0 32px 24px 32px",
-          borderRadius: 8,
-          background: "linear-gradient(90deg,#1467b4 0%, #3b2e8e 100%)",
-        }}
-      />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
 
-      {/* MAIN CONTENT - center area */}
-      <div className="container-fluid" style={{ paddingLeft: 32, paddingRight: 32 }}>
-        <div className="row justify-content-center">
-          <div className="col-12 col-lg-10">
-            <div className="row g-4 align-items-start">
-              {/* LEFT IMAGE - large hero */}
-              <div className="col-md-8">
-                <div className="left-image-card shadow" style={{ borderRadius: 12, overflow: "hidden" }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1350&q=80"
-                    className="hero-img"
-                    alt="hero"
-                    style={{ width: "100%", height: "520px", objectFit: "cover", display: "block" }}
-                  />
-                </div>
-              </div>
+      <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", bgcolor: "#eaf9fb" }}>
 
-              {/* RIGHT LOGIN CARD */}
-              <div className="col-md-4">
-                <div className="card p-4 shadow login-card" style={{ borderRadius: 12 }}>
-                  <div className="text-center mb-3">
-                    {/* ---- REPLACED avatar-circle WITH YOUR login-top.png IMAGE ---- */}
-                    <div style={{ marginBottom: 8 }}>
-                      <img
-                        src={LoginTop}
-                        alt="login top"
-                        style={{
-                          width: 120,
-                          height: 80,
-                          objectFit: "contain",
-                          display: "inline-block",
-                        }}
-                      />
-                    </div>
+        {/* HEADER */}
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            background: "linear-gradient(90deg,#1467b4 0%, #3b2e8e 100%)",
+            mb: 3
+          }}
+        >
+          <Toolbar sx={{ minHeight: 70, px: 3 }}>
+            {/* LEFT: LOGO */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mr: 4 }}>
+              <img src={SbiLogo} alt="SBI Logo" style={{ width: 60, height: 60, borderRadius: 4, backgroundColor: 'white', padding: 2 }} />
+            </Box>
 
-                    <h5 className="fw-bold" style={{ marginTop: 8 }}>
-                      Platform Engineering
-                    </h5>
-                    <p className="text-muted" style={{ marginBottom: 18 }}>
-                      Building Secure IT foundation that fuels Productivity
-                    </p>
-                  </div>
+            {/* CENTER TITLE */}
+            <Typography variant="h6" sx={{ flex: 1, fontWeight: 500 }}>
+              PLATFORM ENGINEERING
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-                  {/* LOGIN BUTTON */}
-                  <button className="btn btn-warning w-100 fw-bold" onClick={handleLogin}>
+        {/* MAIN CONTENT */}
+        <Box sx={{ flex: 1, px: 2, pb: 4, display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: '100%' }}>
+            {/* 
+               Grid Analysis:
+               - We use a single container for all items (Image, Login Card, 3 PE Cards).
+               - This ensures they share the same column logic and alignment.
+               - Used xs=12 sm=8 for Image, xs=12 sm=4 for Login Card.
+               - Used xs=12 sm=4 for each PE Card.
+               - Result: Image sits over PE I & II. Login Card sits over PE III.
+            */}
+            <Grid container spacing={2} alignItems="center">
+
+              {/* LEFT: HERO IMAGE */}
+              <Grid item xs={12} sm={8}>
+                <Box
+                  sx={{
+                    borderRadius: 4,
+                    overflow: 'hidden',
+                    boxShadow: 3,
+                    height: { xs: 300, sm: 400 }, // Increased height significantly for Hero Image
+                    '& img': { width: '100%', height: '100%', objectFit: 'cover' }
+                  }}
+                >
+                  <img src={LoginInfoTop} alt="Platform Engineering Hero" />
+                </Box>
+              </Grid>
+
+              {/* RIGHT: LOGIN CARD */}
+              <Grid item xs={12} sm={4}>
+                <Card
+                  elevation={3}
+                  sx={{
+                    borderRadius: 3,
+                    p: 3, // Increased padding
+                    textAlign: 'center',
+                    // height: 'auto', // Auto height to match content
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Box sx={{ mb: 1 }}>
+                    <img src={LoginTopIcon} alt="Icon" style={{ width: 160, height: 90, objectFit: 'contain' }} />
+                  </Box>
+
+                  <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 700, fontSize: '1rem' }}>
+                    Platform Engineering
+                  </Typography>
+
+                  <Typography variant="caption" color="text.secondary" sx={{ mb: 1.5, maxWidth: 260, fontSize: '0.8rem' }}>
+                    Building Secure IT foundation that fuels Productivity
+                  </Typography>
+
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    size="small"
+                    onClick={handleLogin}
+                    sx={{
+                      bgcolor: "#ffc107",
+                      color: "#000",
+                      '&:hover': { bgcolor: "#ffca2c" },
+                      borderRadius: 1,
+                      py: 0.8,
+                      fontSize: '0.9rem',
+                      fontWeight: 700
+                    }}
+                  >
                     Login
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  </Button>
+                </Card>
+              </Grid>
 
-        {/* BOTTOM 3 CARDS */}
-        <div className="row justify-content-center mt-4">
-          <div className="col-12 col-lg-10">
-            <div className="row g-4">
-              {["PE I", "PE II", "PE III"].map((title, i) => (
-                <div key={i} className="col-md-4">
-                  <div className="card p-3 shadow-sm feature-card" style={{ borderRadius: 10 }}>
-                    <div className="d-flex align-items-center">
-                      <div
-                        className="avatar-small"
-                        style={{
-                          minWidth: 48,
-                          minHeight: 48,
-                          borderRadius: 50,
-                          background: "#0b63b3",
-                          color: "#fff",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
+              {/* BOTTOM: INFO CARDS SECTION (Flexbox Row to Prevent Stacking) */}
+              <Grid item xs={12} sx={{ mt: 1 }}>
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'stretch' }}>
+                  {[
+                    { label: "PE I", title: "Platform Engineering I", color: "#039be5" },
+                    { label: "PE II", title: "Platform Engineering II", color: "#280566" },
+                    { label: "PE III", title: "Platform Engineering III", color: "#6a1b9a" }
+                  ].map((item) => (
+                    <Card
+                      key={item.label}
+                      sx={{
+                        flex: 1, // Distribute width equally
+                        p: 1.5,
+                        borderRadius: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        boxShadow: 2,
+                        minHeight: 180 // Keep compact height
+                      }}
+                    >
+                      <Avatar
+                        sx={{
+                          bgcolor: item.color,
+                          width: 56,
+                          height: 56,
+                          fontSize: '0.9rem',
                           fontWeight: 700,
+                          mb: 1
                         }}
                       >
-                        {title}
-                      </div>
-                      <div className="ms-3">
-                        <h6 className="fw-bold" style={{ marginBottom: 4 }}>
-                          {title}
-                        </h6>
-                        <small className="text-muted">Platform Engineering department</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                        {item.label}
+                      </Avatar>
+
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5, fontSize: '0.85rem' }}>
+                        {item.title}
+                      </Typography>
+
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.75rem', lineHeight: 1.4 }}>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                      </Typography>
+                    </Card>
+                  ))}
+                </Box>
+              </Grid>
+
+            </Grid>
+          </Box>
+        </Box>
+
+      </Box>
+    </ThemeProvider>
   );
 }

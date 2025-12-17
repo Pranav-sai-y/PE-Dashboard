@@ -64,7 +64,6 @@ const theme = createTheme({
   },
 });
 
-// COMPONENT STARTS — renamed correctly
 export default function NewTest() {
   const [activePage, setActivePage] = useState("home");
   const navigate = useNavigate(); // logout support
@@ -77,9 +76,60 @@ export default function NewTest() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <Box sx={{ display: "flex", minHeight: "100vh", height: "100vh" }}>
-        
-        {/* LEFT SIDEBAR */}
+      {/* FULL WIDTH HEADER (FIXED) */}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          background: "linear-gradient(90deg,#1467b4 0%, #3b2e8e 100%)",
+          boxShadow: "none"
+        }}
+      >
+        <Toolbar sx={{ minHeight: 70, px: 3 }}>
+
+          {/* LEFT: LOGO + TEXT */}
+          {/* LEFT: LOGO */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mr: 4 }}>
+            <img src={SbiLogo} alt="SBI Logo" style={{ width: 60, height: 60, borderRadius: 4, backgroundColor: 'white', padding: 2 }} />
+          </Box>
+
+          {/* CENTER TITLE */}
+          <Typography variant="h6" sx={{ flex: 1 }}>
+            PLATFORM ENGINEERING
+          </Typography>
+
+          {/* RIGHT USER INFO */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box sx={{ textAlign: "right", mr: 2 }}>
+              <Typography variant="subtitle2">Welcome Pranav Sai Yadavalli</Typography>
+              <Typography variant="caption">Branch: 4430 GITC BELAPUR</Typography>
+            </Box>
+
+            <Avatar>PY</Avatar>
+
+            <Box
+              onClick={handleLogout}
+              sx={{
+                ml: 1,
+                borderRadius: 2,
+                bgcolor: "#ffd54f",
+                px: 2,
+                py: 0.6,
+                color: "#000",
+                fontWeight: 700,
+                cursor: "pointer",
+                "&:hover": { backgroundColor: "#ffcc33" },
+              }}
+            >
+              Logout
+            </Box>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ display: "flex", minHeight: "100vh", height: "100vh", pt: 0 }}>
+
+        {/* LEFT SIDEBAR (CLIPPED) */}
         <Drawer
           variant="permanent"
           sx={{
@@ -87,22 +137,18 @@ export default function NewTest() {
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
               width: drawerWidth,
+              boxSizing: 'border-box',
               bgcolor: "#2a0b5b",
               color: "#fff",
-              px: 2,
               height: "100vh",
               overflow: "auto",
             },
           }}
         >
-          <Toolbar sx={{ py: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <img src={SbiLogo} alt="SBI Logo" style={{ width: 45, height: 45 }} />
-              <Typography variant="caption">Platform Engineering</Typography>
-            </Box>
-          </Toolbar>
+          {/* Toolbar spacer to push content down below AppBar */}
+          <Toolbar sx={{ minHeight: 70 }} />
 
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ px: 2, mt: 2 }}>
             {/* SEARCH BAR */}
             <TextField
               size="small"
@@ -150,60 +196,26 @@ export default function NewTest() {
           </Box>
         </Drawer>
 
-        {/* RIGHT SIDE */}
-        <Box sx={{ flex: 1, display: "flex", flexDirection: "column", height: "100vh" }}>
-          
-          {/* HEADER */}
-          <AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none" }}>
-            <Toolbar
-              sx={{
-                minHeight: 70,
-                background: "linear-gradient(90deg,#1467b4 0%, #3b2e8e 100%)",
-                color: "#fff",
-                px: 3,
-                borderBottomLeftRadius: 8,
-                borderBottomRightRadius: 8,
-              }}
-            >
-              <Typography variant="h6" sx={{ flex: 1 }}>
-                PLATFORM ENGINEERING
-              </Typography>
+        {/* RIGHT MAIN CONTENT */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            overflow: "hidden"
+          }}
+        >
+          {/* Toolbar spacer */}
+          <Toolbar sx={{ minHeight: 70 }} />
 
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Box sx={{ textAlign: "right", mr: 2 }}>
-                  <Typography variant="subtitle2">Welcome Pranav Sai Yadavalli</Typography>
-                  <Typography variant="caption">Branch: 4430 GITC BELAPUR</Typography>
-                </Box>
-
-                <Avatar>PY</Avatar>
-
-                <Box
-                  onClick={handleLogout}
-                  sx={{
-                    ml: 1,
-                    borderRadius: 2,
-                    bgcolor: "#ffd54f",
-                    px: 2,
-                    py: 0.6,
-                    color: "#000",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    "&:hover": { backgroundColor: "#ffcc33" },
-                  }}
-                >
-                  Logout
-                </Box>
-              </Box>
-            </Toolbar>
-          </AppBar>
-
-          {/* MAIN CONTENT */}
           <Box
             sx={{
               flex: 1,
               overflow: "auto",
               width: "100%",
-              p: activePage === "dashboardN" ? 0 : 3, // FULL WIDTH FOR DASHBOARD N
+              p: activePage === "dashboardN" ? 0 : 3,
             }}
           >
             {activePage === "dashboardN" ? (
@@ -216,35 +228,44 @@ export default function NewTest() {
                 </Typography>
 
                 {/* circles + dropdown card */}
-                <Card sx={{ borderRadius: 2, p: 3, mb: 3, boxShadow: 3 }}>
+                <Card sx={{ borderRadius: 2, p: 2, mb: 2, boxShadow: 3 }}>
 
                   {/* DROPDOWNS */}
-                  <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
-                    <div>
-                      <Typography variant="body2">Department:</Typography>
-                      <TextField select value="All" size="small" SelectProps={{ native: true }} sx={{ minWidth: 100, mb: 1 }}>
+                  <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", mb: 2, gap: 3 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600 }}>Department:</Typography>
+                      <TextField select value="All" size="small" SelectProps={{ native: true }} sx={{ minWidth: 120 }}>
                         <option>All</option>
                         <option>PE I</option>
                         <option>PE II</option>
                         <option>PE III</option>
                       </TextField>
+                    </Box>
 
-                      <Typography variant="body2">Status:</Typography>
-                      <TextField select value="All" size="small" SelectProps={{ native: true }} sx={{ minWidth: 100 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600 }}>Status:</Typography>
+                      <TextField select value="All" size="small" SelectProps={{ native: true }} sx={{ minWidth: 120 }}>
                         <option>All</option>
                         <option>Pending</option>
                       </TextField>
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  {/* CIRCLES */}
-                  <Grid container spacing={2}>
+                  {/* CIRCLES - CSS GRID ENFORCEMENT */}
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+                      gap: 2, // Reduced gap from 4 to 2
+                      mb: 1
+                    }}
+                  >
                     {metrics.map((m) => (
-                      <Grid key={m.id} item xs={6} sm={3} md={3} sx={{ display: "flex", justifyContent: "center" }}>
+                      <Box key={m.id} sx={{ display: "flex", justifyContent: "center" }}>
                         <Box
                           sx={{
-                            width: 120,
-                            height: 120,
+                            width: 110, // Reduced from 140
+                            height: 110, // Reduced from 140
                             borderRadius: "50%",
                             bgcolor: m.color,
                             border: `3px solid ${m.border}`,
@@ -252,36 +273,61 @@ export default function NewTest() {
                             alignItems: "center",
                             justifyContent: "center",
                             flexDirection: "column",
+                            textAlign: "center",
+                            boxShadow: 1,
                           }}
                         >
-                          <Typography variant="h5" sx={{ fontWeight: 700 }}>{m.value}</Typography>
-                          <Typography variant="caption">{m.label}</Typography>
+                          <Typography variant="h5" sx={{ fontWeight: 700, color: "#333" }}>{m.value}</Typography>
+                          <Typography variant="caption" sx={{ mt: 0.5, color: "#666", lineHeight: 1.1, fontSize: '0.7rem' }}>{m.label}</Typography>
                         </Box>
-                      </Grid>
+                      </Box>
                     ))}
-                  </Grid>
+                  </Box>
                 </Card>
 
                 {/* BUTTON */}
-                <button type="button" className="btn btn-primary">Run Reconciliation</button>
+                <Box sx={{ mb: 2 }}>
+                  <button type="button" className="btn btn-primary" style={{ padding: "6px 12px" }}>Run Reconciliation</button>
+                </Box>
 
                 {/* SUMMARY CARDS */}
-                <Card sx={{ borderRadius: 2, p: 3, mt: 3, boxShadow: 3 }}>
-                  <Grid container spacing={3}>
+                <Card sx={{ borderRadius: 2, p: 2, mt: 0, boxShadow: 3 }}>
+                  {/* SUMMARY CARDS - CSS GRID ENFORCEMENT */}
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(5, 1fr)" },
+                      gap: 2
+                    }}
+                  >
                     {summary.map((s) => (
-                      <Grid key={s.id} item xs={12} sm={6} md={2.4}>
-                        <Card sx={{ height: 110 }}>
-                          <Box sx={{ height: 12, background: "linear-gradient(90deg,#0b63b3,#3b2e8e)", borderTopLeftRadius: 4, borderTopRightRadius: 4 }} />
-                          <CardContent sx={{ textAlign: "center" }}>
-                            <Typography variant="subtitle2">{s.title}</Typography>
-                            <Typography variant="h4" sx={{ color: "#0b93d6", fontWeight: 700 }}>
+                      <Box key={s.id}>
+                        <Card sx={{ height: 100 }}> {/* Slight increase to fit header */}
+                          {/* HEADER WITH TITLE */}
+                          <Box
+                            sx={{
+                              height: 36,
+                              background: "linear-gradient(90deg,#0b63b3,#3b2e8e)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            <Typography variant="caption" sx={{ color: "#fff", fontWeight: 700, fontSize: "0.75rem" }}>
+                              {s.title}
+                            </Typography>
+                          </Box>
+
+                          {/* BODY WITH VALUE */}
+                          <CardContent sx={{ textAlign: "center", p: "8px !important", display: "flex", alignItems: "center", justifyContent: "center", height: "calc(100% - 36px)" }}>
+                            <Typography variant="h5" sx={{ color: "#0b93d6", fontWeight: 700 }}>
                               {s.value}
                             </Typography>
                           </CardContent>
                         </Card>
-                      </Grid>
+                      </Box>
                     ))}
-                  </Grid>
+                  </Box>
                 </Card>
 
               </>

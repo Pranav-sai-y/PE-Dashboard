@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Pages/Login";
 import NewTest from "./Pages/NewTest"; // your dashboard file renamed earlier
 
-export default function App(){
+export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
